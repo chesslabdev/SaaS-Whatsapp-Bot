@@ -13,19 +13,19 @@
   ],
   "tags": [
     {
-      "name": "Example"
+      "name": "example"
     },
     {
-      "name": "Users"
+      "name": "auth"
     }
   ],
   "paths": {
-    "/example/health": {
+    "/example/hello": {
       "get": {
-        "summary": "health",
-        "operationId": "health",
+        "summary": "hello",
+        "operationId": "hello",
         "tags": [
-          "Example"
+          "example"
         ],
         "parameters": [],
         "responses": {
@@ -40,30 +40,12 @@
         }
       }
     },
-    "/users": {
-      "get": {
-        "summary": "Retrieve a list of all registered users",
-        "operationId": "List Users",
-        "tags": [
-          "Users"
-        ],
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          }
-        }
-      },
+    "/auth/sign-in": {
       "post": {
-        "summary": "Create a new user account",
-        "operationId": "Create User",
+        "summary": "signIn",
+        "operationId": "signIn",
         "tags": [
-          "Users"
+          "auth"
         ],
         "parameters": [],
         "requestBody": {
@@ -71,7 +53,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UsersCreate UserBody"
+                "$ref": "#/components/schemas/AuthSignInBody"
               }
             }
           }
@@ -88,56 +70,20 @@
         }
       }
     },
-    "/users/:id": {
-      "get": {
-        "summary": "Retrieve a specific user by their ID",
-        "operationId": "Get User by ID",
+    "/auth/sign-up": {
+      "post": {
+        "summary": "signUp",
+        "operationId": "signUp",
         "tags": [
-          "Users"
+          "auth"
         ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          }
-        }
-      },
-      "put": {
-        "summary": "Update an existing user account",
-        "operationId": "Update User",
-        "tags": [
-          "Users"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UsersUpdate UserBody"
+                "$ref": "#/components/schemas/AuthSignUpBody"
               }
             }
           }
@@ -152,23 +98,36 @@
             }
           }
         }
-      },
-      "delete": {
-        "summary": "Delete an existing user account",
-        "operationId": "Delete User",
+      }
+    },
+    "/auth/session": {
+      "get": {
+        "summary": "session",
+        "operationId": "session",
         "tags": [
-          "Users"
+          "auth"
         ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
             }
           }
+        }
+      }
+    },
+    "/auth/sign-out": {
+      "post": {
+        "summary": "signOut",
+        "operationId": "signOut",
+        "tags": [
+          "auth"
         ],
+        "parameters": [],
         "responses": {
           "200": {
             "description": "Success",
@@ -184,36 +143,45 @@
   },
   "components": {
     "schemas": {
-      "UsersCreate UserBody": {
+      "AuthSignInBody": {
         "type": "object",
         "properties": {
-          "name": {
-            "type": "string",
-            "minLength": 1
-          },
           "email": {
             "type": "string",
             "format": "email"
+          },
+          "password": {
+            "type": "string",
+            "minLength": 6
           }
         },
         "required": [
-          "name",
-          "email"
+          "email",
+          "password"
         ],
         "additionalProperties": false
       },
-      "UsersUpdate UserBody": {
+      "AuthSignUpBody": {
         "type": "object",
         "properties": {
-          "name": {
-            "type": "string",
-            "minLength": 1
-          },
           "email": {
             "type": "string",
             "format": "email"
+          },
+          "password": {
+            "type": "string",
+            "minLength": 6
+          },
+          "name": {
+            "type": "string",
+            "minLength": 2
           }
         },
+        "required": [
+          "email",
+          "password",
+          "name"
+        ],
         "additionalProperties": false
       }
     },

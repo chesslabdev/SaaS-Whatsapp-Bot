@@ -11,7 +11,7 @@
  *
  * To modify the client API, update your controller files instead.
  *
- * Generated: 2025-08-26T21:26:17.653Z
+ * Generated: 2025-09-26T20:06:34.930Z
  * Framework: nextjs
  * Output: src/
  */
@@ -31,69 +31,53 @@ export const AppRouterSchema = {
         }
       }
     },
-    "users": {
-      "name": "Users",
-      "path": "/users",
+    "auth": {
+      "name": "auth",
+      "path": "/auth",
       "actions": {
-        "list": {
-          "name": "List Users",
-          "method": "GET",
-          "$Infer": {}
-        },
-        "getById": {
-          "name": "Get User by ID",
-          "path": "/:id",
-          "method": "GET",
-          "$Infer": {}
-        },
-        "create": {
-          "name": "Create User",
+        "signIn": {
           "type": "mutation",
+          "path": "/sign-in",
           "method": "POST",
+          "use": [
+            {
+              "name": "AuthFeatureProcedure"
+            }
+          ],
           "$Infer": {},
           "bodySchema": {
             "type": "object",
             "properties": {
-              "name": {
-                "type": "string"
-              },
               "email": {
                 "type": "string",
                 "format": "email"
               }
             },
             "required": [
-              "name",
               "email"
             ],
             "additionalProperties": false
           }
         },
-        "update": {
-          "name": "Update User",
-          "type": "mutation",
-          "path": "/:id",
-          "method": "PUT",
-          "$Infer": {},
-          "bodySchema": {
-            "type": "object",
-            "properties": {
-              "name": {
-                "type": "string"
-              },
-              "email": {
-                "type": "string",
-                "format": "email"
-              }
-            },
-            "additionalProperties": false
-          }
+        "session": {
+          "path": "/session",
+          "method": "GET",
+          "use": [
+            {
+              "name": "AuthFeatureProcedure"
+            }
+          ],
+          "$Infer": {}
         },
-        "delete": {
-          "name": "Delete User",
+        "signOut": {
           "type": "mutation",
-          "path": "/:id",
-          "method": "DELETE",
+          "path": "/sign-out",
+          "method": "POST",
+          "use": [
+            {
+              "name": "AuthFeatureProcedure"
+            }
+          ],
           "$Infer": {}
         }
       }
@@ -115,19 +99,20 @@ export const AppRouterSchema = {
       ],
       "tags": [
         {
-          "name": "Example"
+          "name": "example"
         },
         {
-          "name": "Users"
+          "name": "CanalMonitorado",
+          "description": "Endpoints for CanalMonitorados"
         }
       ],
       "paths": {
-        "/example/health": {
+        "/example/hello": {
           "get": {
-            "summary": "health",
-            "operationId": "health",
+            "summary": "hello",
+            "operationId": "hello",
             "tags": [
-              "Example"
+              "example"
             ],
             "parameters": [],
             "responses": {
@@ -142,12 +127,12 @@ export const AppRouterSchema = {
             }
           }
         },
-        "/users": {
+        "/canalMonitorados": {
           "get": {
-            "summary": "Retrieve a list of all registered users",
-            "operationId": "List Users",
+            "summary": "List all CanalMonitorados",
+            "operationId": "list",
             "tags": [
-              "Users"
+              "CanalMonitorado"
             ],
             "parameters": [],
             "responses": {
@@ -162,10 +147,10 @@ export const AppRouterSchema = {
             }
           },
           "post": {
-            "summary": "Create a new user account",
-            "operationId": "Create User",
+            "summary": "Create a new CanalMonitorado",
+            "operationId": "create",
             "tags": [
-              "Users"
+              "CanalMonitorado"
             ],
             "parameters": [],
             "requestBody": {
@@ -173,7 +158,7 @@ export const AppRouterSchema = {
               "content": {
                 "application/json": {
                   "schema": {
-                    "$ref": "#/components/schemas/UsersCreate UserBody"
+                    "$ref": "#/components/schemas/CanalMonitoradoCreateBody"
                   }
                 }
               }
@@ -190,12 +175,12 @@ export const AppRouterSchema = {
             }
           }
         },
-        "/users/:id": {
+        "/canalMonitorados/:id": {
           "get": {
-            "summary": "Retrieve a specific user by their ID",
-            "operationId": "Get User by ID",
+            "summary": "Get a CanalMonitorado by ID",
+            "operationId": "getById",
             "tags": [
-              "Users"
+              "CanalMonitorado"
             ],
             "parameters": [
               {
@@ -219,10 +204,10 @@ export const AppRouterSchema = {
             }
           },
           "put": {
-            "summary": "Update an existing user account",
-            "operationId": "Update User",
+            "summary": "Update a CanalMonitorado by ID",
+            "operationId": "update",
             "tags": [
-              "Users"
+              "CanalMonitorado"
             ],
             "parameters": [
               {
@@ -239,7 +224,7 @@ export const AppRouterSchema = {
               "content": {
                 "application/json": {
                   "schema": {
-                    "$ref": "#/components/schemas/UsersUpdate UserBody"
+                    "$ref": "#/components/schemas/CanalMonitoradoUpdateBody"
                   }
                 }
               }
@@ -256,10 +241,10 @@ export const AppRouterSchema = {
             }
           },
           "delete": {
-            "summary": "Delete an existing user account",
-            "operationId": "Delete User",
+            "summary": "Delete a CanalMonitorado by ID",
+            "operationId": "delete",
             "tags": [
-              "Users"
+              "CanalMonitorado"
             ],
             "parameters": [
               {
@@ -286,34 +271,71 @@ export const AppRouterSchema = {
       },
       "components": {
         "schemas": {
-          "UsersCreate UserBody": {
+          "CanalMonitoradoCreateBody": {
             "type": "object",
             "properties": {
-              "name": {
-                "type": "string",
-                "minLength": 1
+              "id_externo_wa": {
+                "type": "string"
               },
-              "email": {
+              "nome": {
+                "type": "string"
+              },
+              "ativo": {
+                "type": "boolean",
+                "nullable": true
+              },
+              "createdAt": {
                 "type": "string",
-                "format": "email"
+                "format": "date-time",
+                "nullable": true
+              },
+              "tags": {
+                "type": "string"
+              },
+              "mensagens": {
+                "type": "string"
+              },
+              "alertas": {
+                "type": "string"
               }
             },
             "required": [
-              "name",
-              "email"
+              "id_externo_wa",
+              "nome",
+              "ativo",
+              "createdAt",
+              "tags",
+              "mensagens",
+              "alertas"
             ],
             "additionalProperties": false
           },
-          "UsersUpdate UserBody": {
+          "CanalMonitoradoUpdateBody": {
             "type": "object",
             "properties": {
-              "name": {
-                "type": "string",
-                "minLength": 1
+              "id_externo_wa": {
+                "type": "string"
               },
-              "email": {
+              "nome": {
+                "type": "string"
+              },
+              "ativo": {
+                "type": "boolean",
+                "nullable": true
+              },
+              "createdAt": {
                 "type": "string",
-                "format": "email"
+                "format": "date-time",
+                "nullable": true
+              },
+              "tags": {
+                "type": "string"
+              },
+              "mensagens": {
+                "type": "string"
+              },
+              "alertas": {
+                "type": "string"
               }
             },
             "additionalProperties": false

@@ -1,4 +1,5 @@
 import { database } from "@/services/database"
+import { auth } from "@/services/auth"
 
 /**
  * @description Create the context of the Igniter.js application
@@ -7,6 +8,7 @@ import { database } from "@/services/database"
 export const createIgniterAppContext = () => {
   return {
     database,
+    auth,
   }
 }
 
