@@ -1,6 +1,8 @@
 import { igniter } from '@/igniter'
-import { exampleController } from '@/features/example'
 import { authController } from '@/features/auth'
+import { organizationController } from '@/features/organization'
+import { memberController } from '@/features/member'
+import { invitationController } from '@/features/invitation'
 
 
 /**
@@ -9,9 +11,10 @@ import { authController } from '@/features/auth'
  */
 export const AppRouter = igniter.router({
   controllers: {
-    example: exampleController,
     auth: authController,
-
+    organization: organizationController,
+    member: memberController,
+    invitation: invitationController,
   }
 })
 

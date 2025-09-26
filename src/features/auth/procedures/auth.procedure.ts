@@ -11,7 +11,6 @@ export const AuthFeatureProcedure = igniter.procedure({
             body: { email, password },
             headers: request.headers,
           })
-
           console.log(`Sign in with email: ${email}`)
           return result
         } catch (error) {
@@ -53,7 +52,6 @@ export const AuthFeatureProcedure = igniter.procedure({
           const result = await context.auth.api.signOut({
             headers: request.headers,
           })
-
           return result
         } catch (error) {
           console.error('Error signing out:', error)
