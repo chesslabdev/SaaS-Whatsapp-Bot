@@ -1,9 +1,10 @@
-import { AuthForm } from "@/features/auth/presentation/auth-form";
+import LoginPresentation from "@/features/auth/presentation/login-page";
 
-export default function AuthPage() {
+
+export default function LoginPage() {
   return (
-    <div>
-        <AuthForm />
-    </div>
+    <>
+       <LoginPresentation />
+    </>
   )
 }
