@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@better-auth/stripe": "^1.3.18",
     "@hookform/resolvers": "^5.1.1",
     "@igniter-js/adapter-bullmq": "latest",
     "@igniter-js/adapter-mcp-server": "latest",
@@ -62,6 +63,7 @@
     "react-resizable-panels": "^3.0.3",
     "recharts": "^3.0.2",
     "sonner": "^2.0.6",
+    "stripe": "^17.7.0",
     "tailwind-merge": "^3.3.1",
     "uuid": "^11.1.0",
     "vaul": "^1.1.2",

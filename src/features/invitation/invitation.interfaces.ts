@@ -1,26 +1,29 @@
 import { z } from 'zod';
 
-// Generated from your 'Invitation' Prisma model
+// Schema for Invitation based on Better Auth Entity
 export const InvitationSchema = z.object({
   id: z.string(),
+  email: z.string().email(),
   organizationId: z.string(),
-  organization: z.string(),
-  email: z.string(),
-  role: z.string().nullable(),
+  inviterId: z.string(),
+  role: z.array(z.string()), // Array of roles as per diagram
   status: z.string(),
   expiresAt: z.date(),
-  inviterId: z.string(),
-  user: z.string(),
+  createdAt: z.date(),
 });
 
-// Schema for creating a new Invitation.
-// Fields managed by the database (id, createdAt, etc.) are omitted.
-export const CreateInvitationInputSchema = InvitationSchema.omit({
-  id: true,
+// Schema for creating a new Invitation
+export const CreateInvitationInputSchema = z.object({
+  email: z.string().email("Email inválido"),
+  organizationId: z.string().optional(), // Optional if using active organization
+  role: z.array(z.string()).default(['member']),
 });
 
-// Schema for updating a Invitation. All fields are optional.
-export const UpdateInvitationInputSchema = CreateInvitationInputSchema.partial();
+// Schema for updating a Invitation
+export const UpdateInvitationInputSchema = z.object({
+  status: z.string().optional(),
+  role: z.array(z.string()).optional(),
+});
 
 // Exporting types for convenience
 export type Invitation = z.infer<typeof InvitationSchema>;

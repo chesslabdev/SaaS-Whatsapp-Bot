@@ -1,24 +1,28 @@
 import { z } from 'zod';
 
-// Generated from your 'Member' Prisma model
+// Schema for Member based on Better Auth Entity
 export const MemberSchema = z.object({
   id: z.string(),
-  organizationId: z.string(),
-  organization: z.string(),
   userId: z.string(),
-  user: z.string(),
-  role: z.string(),
+  organizationId: z.string(),
+  role: z.array(z.string()), // Array of roles as per diagram
   createdAt: z.date(),
+  // Relations (populated when fetched)
+  user: z.any().optional(),
+  organization: z.any().optional(),
 });
 
-// Schema for creating a new Member.
-// Fields managed by the database (id, createdAt, etc.) are omitted.
-export const CreateMemberInputSchema = MemberSchema.omit({
-  id: true,
+// Schema for creating a new Member
+export const CreateMemberInputSchema = z.object({
+  userId: z.string(),
+  organizationId: z.string().optional(), // Optional if using active organization
+  role: z.array(z.string()).default(['member']),
 });
 
-// Schema for updating a Member. All fields are optional.
-export const UpdateMemberInputSchema = CreateMemberInputSchema.partial();
+// Schema for updating a Member
+export const UpdateMemberInputSchema = z.object({
+  role: z.array(z.string()).optional(),
+});
 
 // Exporting types for convenience
 export type Member = z.infer<typeof MemberSchema>;

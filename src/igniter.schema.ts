@@ -11,7 +11,7 @@
  *
  * To modify the client API, update your controller files instead.
  *
- * Generated: 2025-09-26T20:06:34.930Z
+ * Generated: 2025-09-27T16:17:52.200Z
  * Framework: nextjs
  * Output: src/
  */
@@ -20,17 +20,6 @@
 
 export const AppRouterSchema = {
   "controllers": {
-    "example": {
-      "name": "example",
-      "path": "/example",
-      "actions": {
-        "hello": {
-          "path": "/hello",
-          "method": "GET",
-          "$Infer": {}
-        }
-      }
-    },
     "auth": {
       "name": "auth",
       "path": "/auth",
@@ -51,10 +40,49 @@ export const AppRouterSchema = {
               "email": {
                 "type": "string",
                 "format": "email"
+              },
+              "password": {
+                "type": "string",
+                "minLength": 6
               }
             },
             "required": [
-              "email"
+              "email",
+              "password"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "signUp": {
+          "type": "mutation",
+          "path": "/sign-up",
+          "method": "POST",
+          "use": [
+            {
+              "name": "AuthFeatureProcedure"
+            }
+          ],
+          "$Infer": {},
+          "bodySchema": {
+            "type": "object",
+            "properties": {
+              "email": {
+                "type": "string",
+                "format": "email"
+              },
+              "password": {
+                "type": "string",
+                "minLength": 6
+              },
+              "name": {
+                "type": "string",
+                "minLength": 2
+              }
+            },
+            "required": [
+              "email",
+              "password",
+              "name"
             ],
             "additionalProperties": false
           }
@@ -81,6 +109,1152 @@ export const AppRouterSchema = {
           "$Infer": {}
         }
       }
+    },
+    "organization": {
+      "name": "Organization",
+      "description": "Endpoints for Organizations",
+      "path": "/organizations",
+      "actions": {
+        "createOrganization": {
+          "name": "createOrganization",
+          "type": "mutation",
+          "path": "/create-org",
+          "method": "POST",
+          "description": "Create a new organization via Better Auth",
+          "use": [
+            {
+              "name": "organization"
+            }
+          ],
+          "$Infer": {},
+          "bodySchema": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "minLength": 2
+              },
+              "slug": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "name"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "listUserOrganizations": {
+          "name": "listUserOrganizations",
+          "description": "List user organizations",
+          "path": "/user-orgs",
+          "use": [
+            {
+              "name": "organization"
+            }
+          ],
+          "method": "GET",
+          "$Infer": {}
+        },
+        "getActive": {
+          "name": "getActive",
+          "description": "Get active organization",
+          "path": "/active",
+          "use": [
+            {
+              "name": "organization"
+            }
+          ],
+          "method": "GET",
+          "$Infer": {}
+        },
+        "setActive": {
+          "name": "setActive",
+          "type": "mutation",
+          "path": "/set-active",
+          "method": "POST",
+          "description": "Set active organization",
+          "use": [
+            {
+              "name": "organization"
+            }
+          ],
+          "$Infer": {},
+          "bodySchema": {
+            "type": "object",
+            "properties": {
+              "organizationId": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "organizationId"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "updateOrganization": {
+          "name": "updateOrganization",
+          "type": "mutation",
+          "path": "/update-org",
+          "method": "PUT",
+          "description": "Update organization via Better Auth",
+          "use": [
+            {
+              "name": "organization"
+            }
+          ],
+          "$Infer": {},
+          "bodySchema": {
+            "type": "object",
+            "properties": {
+              "organizationId": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string",
+                "minLength": 2
+              },
+              "slug": {
+                "type": "string"
+              },
+              "metadata": {
+                "type": "object",
+                "additionalProperties": {}
+              }
+            },
+            "required": [
+              "organizationId"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "deleteOrganization": {
+          "name": "deleteOrganization",
+          "type": "mutation",
+          "path": "/delete-org",
+          "method": "DELETE",
+          "description": "Delete organization via Better Auth",
+          "use": [
+            {
+              "name": "organization"
+            }
+          ],
+          "$Infer": {},
+          "bodySchema": {
+            "type": "object",
+            "properties": {
+              "organizationId": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "organizationId"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "leave": {
+          "name": "leave",
+          "type": "mutation",
+          "path": "/leave",
+          "method": "POST",
+          "description": "Leave organization",
+          "use": [
+            {
+              "name": "organization"
+            }
+          ],
+          "$Infer": {},
+          "bodySchema": {
+            "type": "object",
+            "properties": {
+              "organizationId": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          }
+        }
+      }
+    },
+    "member": {
+      "name": "Member",
+      "description": "Endpoints for Members",
+      "path": "/members",
+      "actions": {
+        "listByOrganization": {
+          "name": "listByOrganization",
+          "description": "List members of an organization",
+          "path": "/organization",
+          "use": [
+            {
+              "name": "member"
+            }
+          ],
+          "method": "GET",
+          "$Infer": {},
+          "querySchema": {
+            "type": "object",
+            "properties": {
+              "organizationId": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "addToOrganization": {
+          "name": "addToOrganization",
+          "type": "mutation",
+          "path": "/organization/add",
+          "method": "POST",
+          "description": "Add a member to an organization",
+          "use": [
+            {
+              "name": "member"
+            }
+          ],
+          "$Infer": {},
+          "bodySchema": {
+            "type": "object",
+            "properties": {
+              "userId": {
+                "type": "string"
+              },
+              "role": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                ],
+                "default": "member"
+              },
+              "organizationId": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "userId"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "updateRole": {
+          "name": "updateRole",
+          "type": "mutation",
+          "path": "/organization/update-role",
+          "method": "PUT",
+          "description": "Update member role in organization",
+          "use": [
+            {
+              "name": "member"
+            }
+          ],
+          "$Infer": {},
+          "bodySchema": {
+            "type": "object",
+            "properties": {
+              "memberId": {
+                "type": "string"
+              },
+              "role": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                ]
+              },
+              "organizationId": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "memberId",
+              "role"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "removeFromOrganization": {
+          "name": "removeFromOrganization",
+          "type": "mutation",
+          "path": "/organization/remove",
+          "method": "DELETE",
+          "description": "Remove member from organization",
+          "use": [
+            {
+              "name": "member"
+            }
+          ],
+          "$Infer": {},
+          "bodySchema": {
+            "type": "object",
+            "properties": {
+              "memberId": {
+                "type": "string"
+              },
+              "organizationId": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "memberId"
+            ],
+            "additionalProperties": false
+          }
+        }
+      }
+    },
+    "invitation": {
+      "name": "Invitation",
+      "description": "Endpoints for Invitations",
+      "path": "/invitations",
+      "actions": {
+        "send": {
+          "name": "send",
+          "type": "mutation",
+          "path": "/send",
+          "method": "POST",
+          "description": "Send organization invitation",
+          "use": [
+            {
+              "name": "invitation"
+            }
+          ],
+          "$Infer": {},
+          "bodySchema": {
+            "type": "object",
+            "properties": {
+              "email": {
+                "type": "string",
+                "format": "email"
+              },
+              "role": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                ],
+                "default": "member"
+              },
+              "organizationId": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "email"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "listByOrganization": {
+          "name": "listByOrganization",
+          "description": "List organization invitations",
+          "path": "/organization",
+          "use": [
+            {
+              "name": "invitation"
+            }
+          ],
+          "method": "GET",
+          "$Infer": {},
+          "querySchema": {
+            "type": "object",
+            "properties": {
+              "organizationId": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "cancel": {
+          "name": "cancel",
+          "type": "mutation",
+          "path": "/cancel",
+          "method": "DELETE",
+          "description": "Cancel invitation",
+          "use": [
+            {
+              "name": "invitation"
+            }
+          ],
+          "$Infer": {},
+          "bodySchema": {
+            "type": "object",
+            "properties": {
+              "invitationId": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "invitationId"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "accept": {
+          "name": "accept",
+          "type": "mutation",
+          "path": "/accept",
+          "method": "POST",
+          "description": "Accept invitation",
+          "use": [
+            {
+              "name": "invitation"
+            }
+          ],
+          "$Infer": {},
+          "bodySchema": {
+            "type": "object",
+            "properties": {
+              "invitationId": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "invitationId"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "reject": {
+          "name": "reject",
+          "type": "mutation",
+          "path": "/reject",
+          "method": "POST",
+          "description": "Reject invitation",
+          "use": [
+            {
+              "name": "invitation"
+            }
+          ],
+          "$Infer": {},
+          "bodySchema": {
+            "type": "object",
+            "properties": {
+              "invitationId": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "invitationId"
+            ],
+            "additionalProperties": false
+          }
+        }
+      }
+    },
+    "team": {
+      "name": "Team",
+      "description": "Endpoints for Teams",
+      "path": "/teams",
+      "actions": {
+        "create": {
+          "name": "create",
+          "type": "mutation",
+          "path": "/create",
+          "method": "POST",
+          "description": "Create a new team in organization",
+          "use": [
+            {
+              "name": "team"
+            }
+          ],
+          "$Infer": {},
+          "bodySchema": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "minLength": 2
+              },
+              "organizationId": {
+                "type": "string"
+              },
+              "gruposAtribuidos": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "configuracaoEquipe": {
+                "type": "object",
+                "properties": {
+                  "gatilhosCustomizados": {
+                    "type": "array"
+                  },
+                  "prioridadePadrao": {
+                    "type": "string"
+                  },
+                  "slaResposta": {
+                    "type": "number"
+                  },
+                  "headUserId": {
+                    "type": "string"
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "name"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "list": {
+          "name": "list",
+          "description": "List all teams in organization",
+          "path": "/list",
+          "use": [
+            {
+              "name": "team"
+            }
+          ],
+          "method": "GET",
+          "$Infer": {},
+          "querySchema": {
+            "type": "object",
+            "properties": {
+              "organizationId": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "update": {
+          "name": "update",
+          "type": "mutation",
+          "path": "/update",
+          "method": "PUT",
+          "description": "Update team details",
+          "use": [
+            {
+              "name": "team"
+            }
+          ],
+          "$Infer": {},
+          "bodySchema": {
+            "type": "object",
+            "properties": {
+              "teamId": {
+                "type": "string"
+              },
+              "data": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "minLength": 2
+                  },
+                  "gruposAtribuidos": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "configuracaoEquipe": {
+                    "type": "object",
+                    "properties": {
+                      "gatilhosCustomizados": {
+                        "type": "array"
+                      },
+                      "prioridadePadrao": {
+                        "type": "string"
+                      },
+                      "slaResposta": {
+                        "type": "number"
+                      },
+                      "headUserId": {
+                        "type": "string"
+                      }
+                    },
+                    "additionalProperties": false
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "teamId",
+              "data"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "delete": {
+          "name": "delete",
+          "type": "mutation",
+          "path": "/delete",
+          "method": "DELETE",
+          "description": "Delete a team",
+          "use": [
+            {
+              "name": "team"
+            }
+          ],
+          "$Infer": {},
+          "bodySchema": {
+            "type": "object",
+            "properties": {
+              "teamId": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "teamId"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "setActive": {
+          "name": "setActive",
+          "type": "mutation",
+          "path": "/set-active",
+          "method": "POST",
+          "description": "Set active team for user",
+          "use": [
+            {
+              "name": "team"
+            }
+          ],
+          "$Infer": {},
+          "bodySchema": {
+            "type": "object",
+            "properties": {
+              "teamId": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "getActive": {
+          "name": "getActive",
+          "description": "Get current active team",
+          "path": "/active",
+          "use": [
+            {
+              "name": "team"
+            }
+          ],
+          "method": "GET",
+          "$Infer": {}
+        },
+        "listUserTeams": {
+          "name": "listUserTeams",
+          "description": "List all teams user belongs to",
+          "path": "/user-teams",
+          "use": [
+            {
+              "name": "team"
+            }
+          ],
+          "method": "GET",
+          "$Infer": {}
+        },
+        "addMember": {
+          "name": "addMember",
+          "type": "mutation",
+          "path": "/add-member",
+          "method": "POST",
+          "description": "Add member to team",
+          "use": [
+            {
+              "name": "team"
+            }
+          ],
+          "$Infer": {},
+          "bodySchema": {
+            "type": "object",
+            "properties": {
+              "teamId": {
+                "type": "string"
+              },
+              "userId": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "teamId",
+              "userId"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "removeMember": {
+          "name": "removeMember",
+          "type": "mutation",
+          "path": "/remove-member",
+          "method": "DELETE",
+          "description": "Remove member from team",
+          "use": [
+            {
+              "name": "team"
+            }
+          ],
+          "$Infer": {},
+          "bodySchema": {
+            "type": "object",
+            "properties": {
+              "teamId": {
+                "type": "string"
+              },
+              "userId": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "teamId",
+              "userId"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "listMembers": {
+          "name": "listMembers",
+          "description": "List all members of a team",
+          "path": "/members",
+          "use": [
+            {
+              "name": "team"
+            }
+          ],
+          "method": "GET",
+          "$Infer": {},
+          "querySchema": {
+            "type": "object",
+            "properties": {
+              "teamId": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "teamId"
+            ],
+            "additionalProperties": false
+          }
+        }
+      }
+    },
+    "admin": {
+      "name": "Admin",
+      "description": "Admin operations for user management",
+      "path": "/admin",
+      "actions": {
+        "createUser": {
+          "name": "createUser",
+          "type": "mutation",
+          "path": "/create-user",
+          "method": "POST",
+          "description": "Create a new user (admin only)",
+          "use": [
+            {
+              "name": "admin"
+            }
+          ],
+          "$Infer": {},
+          "bodySchema": {
+            "type": "object",
+            "properties": {
+              "email": {
+                "type": "string",
+                "format": "email"
+              },
+              "name": {
+                "type": "string"
+              },
+              "password": {
+                "type": "string",
+                "minLength": 8
+              },
+              "role": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "email",
+              "password"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "listUsers": {
+          "name": "listUsers",
+          "description": "List all users (admin only)",
+          "path": "/users",
+          "use": [
+            {
+              "name": "admin"
+            }
+          ],
+          "method": "GET",
+          "$Infer": {}
+        },
+        "banUser": {
+          "name": "banUser",
+          "type": "mutation",
+          "path": "/ban-user",
+          "method": "POST",
+          "description": "Ban a user",
+          "use": [
+            {
+              "name": "admin"
+            }
+          ],
+          "$Infer": {},
+          "bodySchema": {
+            "type": "object",
+            "properties": {
+              "userId": {
+                "type": "string"
+              },
+              "reason": {
+                "type": "string"
+              },
+              "banExpires": {
+                "type": "string",
+                "format": "date-time"
+              }
+            },
+            "required": [
+              "userId"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "unbanUser": {
+          "name": "unbanUser",
+          "type": "mutation",
+          "path": "/unban-user",
+          "method": "POST",
+          "description": "Unban a user",
+          "use": [
+            {
+              "name": "admin"
+            }
+          ],
+          "$Infer": {},
+          "bodySchema": {
+            "type": "object",
+            "properties": {
+              "userId": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "userId"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "removeUser": {
+          "name": "removeUser",
+          "type": "mutation",
+          "path": "/remove-user",
+          "method": "DELETE",
+          "description": "Permanently remove a user",
+          "use": [
+            {
+              "name": "admin"
+            }
+          ],
+          "$Infer": {},
+          "bodySchema": {
+            "type": "object",
+            "properties": {
+              "userId": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "userId"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "listUserSessions": {
+          "name": "listUserSessions",
+          "description": "List all sessions for a user",
+          "path": "/user-sessions",
+          "use": [
+            {
+              "name": "admin"
+            }
+          ],
+          "method": "GET",
+          "$Infer": {},
+          "querySchema": {
+            "type": "object",
+            "properties": {
+              "userId": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "userId"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "revokeSession": {
+          "name": "revokeSession",
+          "type": "mutation",
+          "path": "/revoke-session",
+          "method": "POST",
+          "description": "Revoke a specific session",
+          "use": [
+            {
+              "name": "admin"
+            }
+          ],
+          "$Infer": {},
+          "bodySchema": {
+            "type": "object",
+            "properties": {
+              "sessionToken": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "sessionToken"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "revokeUserSessions": {
+          "name": "revokeUserSessions",
+          "type": "mutation",
+          "path": "/revoke-user-sessions",
+          "method": "POST",
+          "description": "Revoke all sessions for a user",
+          "use": [
+            {
+              "name": "admin"
+            }
+          ],
+          "$Infer": {},
+          "bodySchema": {
+            "type": "object",
+            "properties": {
+              "userId": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "userId"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "impersonateUser": {
+          "name": "impersonateUser",
+          "type": "mutation",
+          "path": "/impersonate",
+          "method": "POST",
+          "description": "Start impersonating a user",
+          "use": [
+            {
+              "name": "admin"
+            }
+          ],
+          "$Infer": {},
+          "bodySchema": {
+            "type": "object",
+            "properties": {
+              "userId": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "userId"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "stopImpersonating": {
+          "name": "stopImpersonating",
+          "type": "mutation",
+          "path": "/stop-impersonating",
+          "method": "POST",
+          "description": "Stop impersonating and return to admin account",
+          "use": [
+            {
+              "name": "admin"
+            }
+          ],
+          "$Infer": {}
+        }
+      }
+    },
+    "billing": {
+      "name": "Billing",
+      "description": "Endpoints for Stripe billing and subscription management",
+      "path": "/billing",
+      "actions": {
+        "getSubscription": {
+          "name": "getSubscription",
+          "description": "Get current subscription details for the user or reference",
+          "path": "/subscription",
+          "use": [
+            {
+              "name": "billing"
+            }
+          ],
+          "method": "GET",
+          "$Infer": {},
+          "querySchema": {
+            "type": "object",
+            "properties": {
+              "referenceId": {
+                "type": "string",
+                "description": "The reference ID to get subscription for (e.g., organization ID)"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "upgradeSubscription": {
+          "name": "upgradeSubscription",
+          "type": "mutation",
+          "path": "/subscription/upgrade",
+          "method": "POST",
+          "description": "Upgrade subscription to a different plan",
+          "use": [
+            {
+              "name": "billing"
+            }
+          ],
+          "$Infer": {},
+          "bodySchema": {
+            "type": "object",
+            "properties": {
+              "plan": {
+                "type": "string",
+                "enum": [
+                  "Free",
+                  "Pro"
+                ],
+                "description": "The plan to upgrade to"
+              },
+              "referenceId": {
+                "type": "string",
+                "description": "The reference ID for the subscription (e.g., organization ID)"
+              }
+            },
+            "required": [
+              "plan"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "cancelSubscription": {
+          "name": "cancelSubscription",
+          "type": "mutation",
+          "path": "/subscription/cancel",
+          "method": "POST",
+          "description": "Cancel subscription at the end of the current billing period",
+          "use": [
+            {
+              "name": "billing"
+            }
+          ],
+          "$Infer": {},
+          "bodySchema": {
+            "type": "object",
+            "properties": {
+              "subscriptionId": {
+                "type": "string",
+                "description": "The Stripe subscription ID to cancel"
+              },
+              "referenceId": {
+                "type": "string",
+                "description": "The reference ID for the subscription (e.g., organization ID)"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "restoreSubscription": {
+          "name": "restoreSubscription",
+          "type": "mutation",
+          "path": "/subscription/restore",
+          "method": "POST",
+          "description": "Restore a subscription that was set to cancel at period end",
+          "use": [
+            {
+              "name": "billing"
+            }
+          ],
+          "$Infer": {},
+          "bodySchema": {
+            "type": "object",
+            "properties": {
+              "subscriptionId": {
+                "type": "string",
+                "description": "The Stripe subscription ID to restore"
+              },
+              "referenceId": {
+                "type": "string",
+                "description": "The reference ID for the subscription (e.g., organization ID)"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "createBillingPortal": {
+          "name": "createBillingPortal",
+          "type": "mutation",
+          "path": "/portal",
+          "method": "POST",
+          "description": "Create a Stripe billing portal session for customer self-service",
+          "use": [
+            {
+              "name": "billing"
+            }
+          ],
+          "$Infer": {},
+          "bodySchema": {
+            "type": "object",
+            "properties": {
+              "returnUrl": {
+                "type": "string",
+                "format": "uri",
+                "description": "URL to return to after billing portal session"
+              },
+              "referenceId": {
+                "type": "string",
+                "description": "The reference ID for the subscription (e.g., organization ID)"
+              }
+            },
+            "required": [
+              "returnUrl"
+            ],
+            "additionalProperties": false
+          }
+        }
+      }
     }
   },
   "docs": {
@@ -99,20 +1273,96 @@ export const AppRouterSchema = {
       ],
       "tags": [
         {
-          "name": "example"
+          "name": "auth"
         },
         {
-          "name": "CanalMonitorado",
-          "description": "Endpoints for CanalMonitorados"
+          "name": "Organization",
+          "description": "Endpoints for Organizations"
+        },
+        {
+          "name": "Member",
+          "description": "Endpoints for Members"
+        },
+        {
+          "name": "Invitation",
+          "description": "Endpoints for Invitations"
+        },
+        {
+          "name": "Team",
+          "description": "Endpoints for Teams"
+        },
+        {
+          "name": "Admin",
+          "description": "Admin operations for user management"
         }
       ],
       "paths": {
-        "/example/hello": {
-          "get": {
-            "summary": "hello",
-            "operationId": "hello",
+        "/auth/sign-in": {
+          "post": {
+            "summary": "signIn",
+            "operationId": "signIn",
             "tags": [
-              "example"
+              "auth"
+            ],
+            "parameters": [],
+            "requestBody": {
+              "required": true,
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/AuthSignInBody"
+                  }
+                }
+              }
+            },
+            "responses": {
+              "200": {
+                "description": "Success",
+                "content": {
+                  "application/json": {
+                    "schema": {}
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/auth/sign-up": {
+          "post": {
+            "summary": "signUp",
+            "operationId": "signUp",
+            "tags": [
+              "auth"
+            ],
+            "parameters": [],
+            "requestBody": {
+              "required": true,
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/AuthSignUpBody"
+                  }
+                }
+              }
+            },
+            "responses": {
+              "200": {
+                "description": "Success",
+                "content": {
+                  "application/json": {
+                    "schema": {}
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/auth/session": {
+          "get": {
+            "summary": "session",
+            "operationId": "session",
+            "tags": [
+              "auth"
             ],
             "parameters": [],
             "responses": {
@@ -127,12 +1377,12 @@ export const AppRouterSchema = {
             }
           }
         },
-        "/canalMonitorados": {
-          "get": {
-            "summary": "List all CanalMonitorados",
-            "operationId": "list",
+        "/auth/sign-out": {
+          "post": {
+            "summary": "signOut",
+            "operationId": "signOut",
             "tags": [
-              "CanalMonitorado"
+              "auth"
             ],
             "parameters": [],
             "responses": {
@@ -145,12 +1395,472 @@ export const AppRouterSchema = {
                 }
               }
             }
-          },
+          }
+        },
+        "/organizations/create-org": {
           "post": {
-            "summary": "Create a new CanalMonitorado",
+            "summary": "Create a new organization via Better Auth",
+            "operationId": "createOrganization",
+            "tags": [
+              "Organization"
+            ],
+            "parameters": [],
+            "requestBody": {
+              "required": true,
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/OrganizationCreateOrganizationBody"
+                  }
+                }
+              }
+            },
+            "responses": {
+              "200": {
+                "description": "Success",
+                "content": {
+                  "application/json": {
+                    "schema": {}
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/organizations/user-orgs": {
+          "get": {
+            "summary": "List user organizations",
+            "operationId": "listUserOrganizations",
+            "tags": [
+              "Organization"
+            ],
+            "parameters": [],
+            "responses": {
+              "200": {
+                "description": "Success",
+                "content": {
+                  "application/json": {
+                    "schema": {}
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/organizations/active": {
+          "get": {
+            "summary": "Get active organization",
+            "operationId": "getActive",
+            "tags": [
+              "Organization"
+            ],
+            "parameters": [],
+            "responses": {
+              "200": {
+                "description": "Success",
+                "content": {
+                  "application/json": {
+                    "schema": {}
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/organizations/set-active": {
+          "post": {
+            "summary": "Set active organization",
+            "operationId": "setActive",
+            "tags": [
+              "Organization"
+            ],
+            "parameters": [],
+            "requestBody": {
+              "required": true,
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/OrganizationSetActiveBody"
+                  }
+                }
+              }
+            },
+            "responses": {
+              "200": {
+                "description": "Success",
+                "content": {
+                  "application/json": {
+                    "schema": {}
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/organizations/update-org": {
+          "put": {
+            "summary": "Update organization via Better Auth",
+            "operationId": "updateOrganization",
+            "tags": [
+              "Organization"
+            ],
+            "parameters": [],
+            "requestBody": {
+              "required": true,
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/OrganizationUpdateOrganizationBody"
+                  }
+                }
+              }
+            },
+            "responses": {
+              "200": {
+                "description": "Success",
+                "content": {
+                  "application/json": {
+                    "schema": {}
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/organizations/delete-org": {
+          "delete": {
+            "summary": "Delete organization via Better Auth",
+            "operationId": "deleteOrganization",
+            "tags": [
+              "Organization"
+            ],
+            "parameters": [],
+            "requestBody": {
+              "required": true,
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/OrganizationDeleteOrganizationBody"
+                  }
+                }
+              }
+            },
+            "responses": {
+              "200": {
+                "description": "Success",
+                "content": {
+                  "application/json": {
+                    "schema": {}
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/organizations/leave": {
+          "post": {
+            "summary": "Leave organization",
+            "operationId": "leave",
+            "tags": [
+              "Organization"
+            ],
+            "parameters": [],
+            "requestBody": {
+              "required": true,
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/OrganizationLeaveBody"
+                  }
+                }
+              }
+            },
+            "responses": {
+              "200": {
+                "description": "Success",
+                "content": {
+                  "application/json": {
+                    "schema": {}
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/members/organization": {
+          "get": {
+            "summary": "List members of an organization",
+            "operationId": "listByOrganization",
+            "tags": [
+              "Member"
+            ],
+            "parameters": [
+              {
+                "name": "organizationId",
+                "in": "query",
+                "required": false,
+                "schema": {
+                  "type": "string"
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Success",
+                "content": {
+                  "application/json": {
+                    "schema": {}
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/members/organization/add": {
+          "post": {
+            "summary": "Add a member to an organization",
+            "operationId": "addToOrganization",
+            "tags": [
+              "Member"
+            ],
+            "parameters": [],
+            "requestBody": {
+              "required": true,
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/MemberAddToOrganizationBody"
+                  }
+                }
+              }
+            },
+            "responses": {
+              "200": {
+                "description": "Success",
+                "content": {
+                  "application/json": {
+                    "schema": {}
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/members/organization/update-role": {
+          "put": {
+            "summary": "Update member role in organization",
+            "operationId": "updateRole",
+            "tags": [
+              "Member"
+            ],
+            "parameters": [],
+            "requestBody": {
+              "required": true,
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/MemberUpdateRoleBody"
+                  }
+                }
+              }
+            },
+            "responses": {
+              "200": {
+                "description": "Success",
+                "content": {
+                  "application/json": {
+                    "schema": {}
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/members/organization/remove": {
+          "delete": {
+            "summary": "Remove member from organization",
+            "operationId": "removeFromOrganization",
+            "tags": [
+              "Member"
+            ],
+            "parameters": [],
+            "requestBody": {
+              "required": true,
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/MemberRemoveFromOrganizationBody"
+                  }
+                }
+              }
+            },
+            "responses": {
+              "200": {
+                "description": "Success",
+                "content": {
+                  "application/json": {
+                    "schema": {}
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/invitations/send": {
+          "post": {
+            "summary": "Send organization invitation",
+            "operationId": "send",
+            "tags": [
+              "Invitation"
+            ],
+            "parameters": [],
+            "requestBody": {
+              "required": true,
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/InvitationSendBody"
+                  }
+                }
+              }
+            },
+            "responses": {
+              "200": {
+                "description": "Success",
+                "content": {
+                  "application/json": {
+                    "schema": {}
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/invitations/organization": {
+          "get": {
+            "summary": "List organization invitations",
+            "operationId": "listByOrganization",
+            "tags": [
+              "Invitation"
+            ],
+            "parameters": [
+              {
+                "name": "organizationId",
+                "in": "query",
+                "required": false,
+                "schema": {
+                  "type": "string"
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Success",
+                "content": {
+                  "application/json": {
+                    "schema": {}
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/invitations/cancel": {
+          "delete": {
+            "summary": "Cancel invitation",
+            "operationId": "cancel",
+            "tags": [
+              "Invitation"
+            ],
+            "parameters": [],
+            "requestBody": {
+              "required": true,
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/InvitationCancelBody"
+                  }
+                }
+              }
+            },
+            "responses": {
+              "200": {
+                "description": "Success",
+                "content": {
+                  "application/json": {
+                    "schema": {}
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/invitations/accept": {
+          "post": {
+            "summary": "Accept invitation",
+            "operationId": "accept",
+            "tags": [
+              "Invitation"
+            ],
+            "parameters": [],
+            "requestBody": {
+              "required": true,
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/InvitationAcceptBody"
+                  }
+                }
+              }
+            },
+            "responses": {
+              "200": {
+                "description": "Success",
+                "content": {
+                  "application/json": {
+                    "schema": {}
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/invitations/reject": {
+          "post": {
+            "summary": "Reject invitation",
+            "operationId": "reject",
+            "tags": [
+              "Invitation"
+            ],
+            "parameters": [],
+            "requestBody": {
+              "required": true,
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/InvitationRejectBody"
+                  }
+                }
+              }
+            },
+            "responses": {
+              "200": {
+                "description": "Success",
+                "content": {
+                  "application/json": {
+                    "schema": {}
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/teams/create": {
+          "post": {
+            "summary": "Create a new team in organization",
             "operationId": "create",
             "tags": [
-              "CanalMonitorado"
+              "Team"
             ],
             "parameters": [],
             "requestBody": {
@@ -158,7 +1868,7 @@ export const AppRouterSchema = {
               "content": {
                 "application/json": {
                   "schema": {
-                    "$ref": "#/components/schemas/CanalMonitoradoCreateBody"
+                    "$ref": "#/components/schemas/TeamCreateBody"
                   }
                 }
               }
@@ -175,18 +1885,18 @@ export const AppRouterSchema = {
             }
           }
         },
-        "/canalMonitorados/:id": {
+        "/teams/list": {
           "get": {
-            "summary": "Get a CanalMonitorado by ID",
-            "operationId": "getById",
+            "summary": "List all teams in organization",
+            "operationId": "list",
             "tags": [
-              "CanalMonitorado"
+              "Team"
             ],
             "parameters": [
               {
-                "name": "id",
-                "in": "path",
-                "required": true,
+                "name": "organizationId",
+                "in": "query",
+                "required": false,
                 "schema": {
                   "type": "string"
                 }
@@ -202,29 +1912,22 @@ export const AppRouterSchema = {
                 }
               }
             }
-          },
+          }
+        },
+        "/teams/update": {
           "put": {
-            "summary": "Update a CanalMonitorado by ID",
+            "summary": "Update team details",
             "operationId": "update",
             "tags": [
-              "CanalMonitorado"
+              "Team"
             ],
-            "parameters": [
-              {
-                "name": "id",
-                "in": "path",
-                "required": true,
-                "schema": {
-                  "type": "string"
-                }
-              }
-            ],
+            "parameters": [],
             "requestBody": {
               "required": true,
               "content": {
                 "application/json": {
                   "schema": {
-                    "$ref": "#/components/schemas/CanalMonitoradoUpdateBody"
+                    "$ref": "#/components/schemas/TeamUpdateBody"
                   }
                 }
               }
@@ -239,23 +1942,464 @@ export const AppRouterSchema = {
                 }
               }
             }
-          },
+          }
+        },
+        "/teams/delete": {
           "delete": {
-            "summary": "Delete a CanalMonitorado by ID",
+            "summary": "Delete a team",
             "operationId": "delete",
             "tags": [
-              "CanalMonitorado"
+              "Team"
+            ],
+            "parameters": [],
+            "requestBody": {
+              "required": true,
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/TeamDeleteBody"
+                  }
+                }
+              }
+            },
+            "responses": {
+              "200": {
+                "description": "Success",
+                "content": {
+                  "application/json": {
+                    "schema": {}
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/teams/set-active": {
+          "post": {
+            "summary": "Set active team for user",
+            "operationId": "setActive",
+            "tags": [
+              "Team"
+            ],
+            "parameters": [],
+            "requestBody": {
+              "required": true,
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/TeamSetActiveBody"
+                  }
+                }
+              }
+            },
+            "responses": {
+              "200": {
+                "description": "Success",
+                "content": {
+                  "application/json": {
+                    "schema": {}
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/teams/active": {
+          "get": {
+            "summary": "Get current active team",
+            "operationId": "getActive",
+            "tags": [
+              "Team"
+            ],
+            "parameters": [],
+            "responses": {
+              "200": {
+                "description": "Success",
+                "content": {
+                  "application/json": {
+                    "schema": {}
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/teams/user-teams": {
+          "get": {
+            "summary": "List all teams user belongs to",
+            "operationId": "listUserTeams",
+            "tags": [
+              "Team"
+            ],
+            "parameters": [],
+            "responses": {
+              "200": {
+                "description": "Success",
+                "content": {
+                  "application/json": {
+                    "schema": {}
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/teams/add-member": {
+          "post": {
+            "summary": "Add member to team",
+            "operationId": "addMember",
+            "tags": [
+              "Team"
+            ],
+            "parameters": [],
+            "requestBody": {
+              "required": true,
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/TeamAddMemberBody"
+                  }
+                }
+              }
+            },
+            "responses": {
+              "200": {
+                "description": "Success",
+                "content": {
+                  "application/json": {
+                    "schema": {}
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/teams/remove-member": {
+          "delete": {
+            "summary": "Remove member from team",
+            "operationId": "removeMember",
+            "tags": [
+              "Team"
+            ],
+            "parameters": [],
+            "requestBody": {
+              "required": true,
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/TeamRemoveMemberBody"
+                  }
+                }
+              }
+            },
+            "responses": {
+              "200": {
+                "description": "Success",
+                "content": {
+                  "application/json": {
+                    "schema": {}
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/teams/members": {
+          "get": {
+            "summary": "List all members of a team",
+            "operationId": "listMembers",
+            "tags": [
+              "Team"
             ],
             "parameters": [
               {
-                "name": "id",
-                "in": "path",
+                "name": "teamId",
+                "in": "query",
                 "required": true,
                 "schema": {
                   "type": "string"
                 }
               }
             ],
+            "responses": {
+              "200": {
+                "description": "Success",
+                "content": {
+                  "application/json": {
+                    "schema": {}
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/admin/create-user": {
+          "post": {
+            "summary": "Create a new user (admin only)",
+            "operationId": "createUser",
+            "tags": [
+              "Admin"
+            ],
+            "parameters": [],
+            "requestBody": {
+              "required": true,
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/AdminCreateUserBody"
+                  }
+                }
+              }
+            },
+            "responses": {
+              "200": {
+                "description": "Success",
+                "content": {
+                  "application/json": {
+                    "schema": {}
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/admin/users": {
+          "get": {
+            "summary": "List all users (admin only)",
+            "operationId": "listUsers",
+            "tags": [
+              "Admin"
+            ],
+            "parameters": [],
+            "responses": {
+              "200": {
+                "description": "Success",
+                "content": {
+                  "application/json": {
+                    "schema": {}
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/admin/ban-user": {
+          "post": {
+            "summary": "Ban a user",
+            "operationId": "banUser",
+            "tags": [
+              "Admin"
+            ],
+            "parameters": [],
+            "requestBody": {
+              "required": true,
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/AdminBanUserBody"
+                  }
+                }
+              }
+            },
+            "responses": {
+              "200": {
+                "description": "Success",
+                "content": {
+                  "application/json": {
+                    "schema": {}
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/admin/unban-user": {
+          "post": {
+            "summary": "Unban a user",
+            "operationId": "unbanUser",
+            "tags": [
+              "Admin"
+            ],
+            "parameters": [],
+            "requestBody": {
+              "required": true,
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/AdminUnbanUserBody"
+                  }
+                }
+              }
+            },
+            "responses": {
+              "200": {
+                "description": "Success",
+                "content": {
+                  "application/json": {
+                    "schema": {}
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/admin/remove-user": {
+          "delete": {
+            "summary": "Permanently remove a user",
+            "operationId": "removeUser",
+            "tags": [
+              "Admin"
+            ],
+            "parameters": [],
+            "requestBody": {
+              "required": true,
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/AdminRemoveUserBody"
+                  }
+                }
+              }
+            },
+            "responses": {
+              "200": {
+                "description": "Success",
+                "content": {
+                  "application/json": {
+                    "schema": {}
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/admin/user-sessions": {
+          "get": {
+            "summary": "List all sessions for a user",
+            "operationId": "listUserSessions",
+            "tags": [
+              "Admin"
+            ],
+            "parameters": [
+              {
+                "name": "userId",
+                "in": "query",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Success",
+                "content": {
+                  "application/json": {
+                    "schema": {}
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/admin/revoke-session": {
+          "post": {
+            "summary": "Revoke a specific session",
+            "operationId": "revokeSession",
+            "tags": [
+              "Admin"
+            ],
+            "parameters": [],
+            "requestBody": {
+              "required": true,
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/AdminRevokeSessionBody"
+                  }
+                }
+              }
+            },
+            "responses": {
+              "200": {
+                "description": "Success",
+                "content": {
+                  "application/json": {
+                    "schema": {}
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/admin/revoke-user-sessions": {
+          "post": {
+            "summary": "Revoke all sessions for a user",
+            "operationId": "revokeUserSessions",
+            "tags": [
+              "Admin"
+            ],
+            "parameters": [],
+            "requestBody": {
+              "required": true,
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/AdminRevokeUserSessionsBody"
+                  }
+                }
+              }
+            },
+            "responses": {
+              "200": {
+                "description": "Success",
+                "content": {
+                  "application/json": {
+                    "schema": {}
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/admin/impersonate": {
+          "post": {
+            "summary": "Start impersonating a user",
+            "operationId": "impersonateUser",
+            "tags": [
+              "Admin"
+            ],
+            "parameters": [],
+            "requestBody": {
+              "required": true,
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/AdminImpersonateUserBody"
+                  }
+                }
+              }
+            },
+            "responses": {
+              "200": {
+                "description": "Success",
+                "content": {
+                  "application/json": {
+                    "schema": {}
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/admin/stop-impersonating": {
+          "post": {
+            "summary": "Stop impersonating and return to admin account",
+            "operationId": "stopImpersonating",
+            "tags": [
+              "Admin"
+            ],
+            "parameters": [],
             "responses": {
               "200": {
                 "description": "Success",
@@ -271,73 +2415,550 @@ export const AppRouterSchema = {
       },
       "components": {
         "schemas": {
-          "CanalMonitoradoCreateBody": {
+          "AuthSignInBody": {
             "type": "object",
             "properties": {
-              "id_externo_wa": {
-                "type": "string"
-              },
-              "nome": {
-                "type": "string"
-              },
-              "ativo": {
-                "type": "boolean",
-                "nullable": true
-              },
-              "createdAt": {
+              "email": {
                 "type": "string",
-                "format": "date-time",
-                "nullable": true
+                "format": "email"
               },
-              "tags": {
-                "type": "string"
+              "password": {
+                "type": "string",
+                "minLength": 6
+              }
+            },
+            "required": [
+              "email",
+              "password"
+            ],
+            "additionalProperties": false
+          },
+          "AuthSignUpBody": {
+            "type": "object",
+            "properties": {
+              "email": {
+                "type": "string",
+                "format": "email"
               },
-              "mensagens": {
-                "type": "string"
+              "password": {
+                "type": "string",
+                "minLength": 6
               },
-              "alertas": {
+              "name": {
+                "type": "string",
+                "minLength": 2
+              }
+            },
+            "required": [
+              "email",
+              "password",
+              "name"
+            ],
+            "additionalProperties": false
+          },
+          "OrganizationCreateOrganizationBody": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "minLength": 2
+              },
+              "slug": {
                 "type": "string"
               }
             },
             "required": [
-              "id_externo_wa",
-              "nome",
-              "ativo",
-              "createdAt",
-              "tags",
-              "mensagens",
-              "alertas"
+              "name"
             ],
             "additionalProperties": false
           },
-          "CanalMonitoradoUpdateBody": {
+          "OrganizationSetActiveBody": {
             "type": "object",
             "properties": {
-              "id_externo_wa": {
-                "type": "string"
-              },
-              "nome": {
-                "type": "string"
-              },
-              "ativo": {
-                "type": "boolean",
-                "nullable": true
-              },
-              "createdAt": {
-                "type": "string",
-                "format": "date-time",
-                "nullable": true
-              },
-              "tags": {
-                "type": "string"
-              },
-              "mensagens": {
-                "type": "string"
-              },
-              "alertas": {
+              "organizationId": {
                 "type": "string"
               }
             },
+            "required": [
+              "organizationId"
+            ],
+            "additionalProperties": false
+          },
+          "OrganizationUpdateOrganizationBody": {
+            "type": "object",
+            "properties": {
+              "organizationId": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string",
+                "minLength": 2
+              },
+              "slug": {
+                "type": "string"
+              },
+              "metadata": {
+                "type": "object",
+                "additionalProperties": {}
+              }
+            },
+            "required": [
+              "organizationId"
+            ],
+            "additionalProperties": false
+          },
+          "OrganizationDeleteOrganizationBody": {
+            "type": "object",
+            "properties": {
+              "organizationId": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "organizationId"
+            ],
+            "additionalProperties": false
+          },
+          "OrganizationLeaveBody": {
+            "type": "object",
+            "properties": {
+              "organizationId": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          },
+          "MemberListByOrganizationQuery": {
+            "type": "object",
+            "properties": {
+              "organizationId": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          },
+          "MemberAddToOrganizationBody": {
+            "type": "object",
+            "properties": {
+              "userId": {
+                "type": "string"
+              },
+              "role": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                ],
+                "default": "member"
+              },
+              "organizationId": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "userId"
+            ],
+            "additionalProperties": false
+          },
+          "MemberUpdateRoleBody": {
+            "type": "object",
+            "properties": {
+              "memberId": {
+                "type": "string"
+              },
+              "role": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                ]
+              },
+              "organizationId": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "memberId",
+              "role"
+            ],
+            "additionalProperties": false
+          },
+          "MemberRemoveFromOrganizationBody": {
+            "type": "object",
+            "properties": {
+              "memberId": {
+                "type": "string"
+              },
+              "organizationId": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "memberId"
+            ],
+            "additionalProperties": false
+          },
+          "InvitationSendBody": {
+            "type": "object",
+            "properties": {
+              "email": {
+                "type": "string",
+                "format": "email"
+              },
+              "role": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                ],
+                "default": "member"
+              },
+              "organizationId": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "email"
+            ],
+            "additionalProperties": false
+          },
+          "InvitationListByOrganizationQuery": {
+            "type": "object",
+            "properties": {
+              "organizationId": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          },
+          "InvitationCancelBody": {
+            "type": "object",
+            "properties": {
+              "invitationId": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "invitationId"
+            ],
+            "additionalProperties": false
+          },
+          "InvitationAcceptBody": {
+            "type": "object",
+            "properties": {
+              "invitationId": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "invitationId"
+            ],
+            "additionalProperties": false
+          },
+          "InvitationRejectBody": {
+            "type": "object",
+            "properties": {
+              "invitationId": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "invitationId"
+            ],
+            "additionalProperties": false
+          },
+          "TeamCreateBody": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "minLength": 2
+              },
+              "organizationId": {
+                "type": "string"
+              },
+              "gruposAtribuidos": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "configuracaoEquipe": {
+                "type": "object",
+                "properties": {
+                  "gatilhosCustomizados": {
+                    "type": "array"
+                  },
+                  "prioridadePadrao": {
+                    "type": "string"
+                  },
+                  "slaResposta": {
+                    "type": "number"
+                  },
+                  "headUserId": {
+                    "type": "string"
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "name"
+            ],
+            "additionalProperties": false
+          },
+          "TeamListQuery": {
+            "type": "object",
+            "properties": {
+              "organizationId": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          },
+          "TeamUpdateBody": {
+            "type": "object",
+            "properties": {
+              "teamId": {
+                "type": "string"
+              },
+              "data": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "minLength": 2
+                  },
+                  "gruposAtribuidos": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "configuracaoEquipe": {
+                    "type": "object",
+                    "properties": {
+                      "gatilhosCustomizados": {
+                        "type": "array"
+                      },
+                      "prioridadePadrao": {
+                        "type": "string"
+                      },
+                      "slaResposta": {
+                        "type": "number"
+                      },
+                      "headUserId": {
+                        "type": "string"
+                      }
+                    },
+                    "additionalProperties": false
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "teamId",
+              "data"
+            ],
+            "additionalProperties": false
+          },
+          "TeamDeleteBody": {
+            "type": "object",
+            "properties": {
+              "teamId": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "teamId"
+            ],
+            "additionalProperties": false
+          },
+          "TeamSetActiveBody": {
+            "type": "object",
+            "properties": {
+              "teamId": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          },
+          "TeamAddMemberBody": {
+            "type": "object",
+            "properties": {
+              "teamId": {
+                "type": "string"
+              },
+              "userId": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "teamId",
+              "userId"
+            ],
+            "additionalProperties": false
+          },
+          "TeamRemoveMemberBody": {
+            "type": "object",
+            "properties": {
+              "teamId": {
+                "type": "string"
+              },
+              "userId": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "teamId",
+              "userId"
+            ],
+            "additionalProperties": false
+          },
+          "TeamListMembersQuery": {
+            "type": "object",
+            "properties": {
+              "teamId": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "teamId"
+            ],
+            "additionalProperties": false
+          },
+          "AdminCreateUserBody": {
+            "type": "object",
+            "properties": {
+              "email": {
+                "type": "string",
+                "format": "email"
+              },
+              "name": {
+                "type": "string"
+              },
+              "password": {
+                "type": "string",
+                "minLength": 8
+              },
+              "role": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "email",
+              "password"
+            ],
+            "additionalProperties": false
+          },
+          "AdminBanUserBody": {
+            "type": "object",
+            "properties": {
+              "userId": {
+                "type": "string"
+              },
+              "reason": {
+                "type": "string"
+              },
+              "banExpires": {
+                "type": "string",
+                "format": "date-time"
+              }
+            },
+            "required": [
+              "userId"
+            ],
+            "additionalProperties": false
+          },
+          "AdminUnbanUserBody": {
+            "type": "object",
+            "properties": {
+              "userId": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "userId"
+            ],
+            "additionalProperties": false
+          },
+          "AdminRemoveUserBody": {
+            "type": "object",
+            "properties": {
+              "userId": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "userId"
+            ],
+            "additionalProperties": false
+          },
+          "AdminListUserSessionsQuery": {
+            "type": "object",
+            "properties": {
+              "userId": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "userId"
+            ],
+            "additionalProperties": false
+          },
+          "AdminRevokeSessionBody": {
+            "type": "object",
+            "properties": {
+              "sessionToken": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "sessionToken"
+            ],
+            "additionalProperties": false
+          },
+          "AdminRevokeUserSessionsBody": {
+            "type": "object",
+            "properties": {
+              "userId": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "userId"
+            ],
+            "additionalProperties": false
+          },
+          "AdminImpersonateUserBody": {
+            "type": "object",
+            "properties": {
+              "userId": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "userId"
+            ],
             "additionalProperties": false
           }
         },

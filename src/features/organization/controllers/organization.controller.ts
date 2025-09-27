@@ -73,11 +73,16 @@ export const organizationController = igniter.controller({
         organizationId: z.string(),
         name: z.string().min(2).optional(),
         slug: z.string().optional(),
-        metadata: z.any().optional(),
+        metadata: z.record(z.string(), z.any()).optional(),
       }),
       use: [organizationProcedure()],
       handler: async ({ request, context, response }) => {
-        const { organizationId, ...data } = request.body
+        const { organizationId, metadata, ...rest } = request.body
+
+        const data = {
+          ...rest,
+          ...(metadata && typeof metadata === 'object' ? { metadata } : {}),
+        }
         const result = await context.organizationRepository.updateOrganization(organizationId, data)
         return response.success(result)
       },
@@ -94,8 +99,9 @@ export const organizationController = igniter.controller({
       use: [organizationProcedure()],
       handler: async ({ request, context, response }) => {
         await context.organizationRepository.deleteOrganization(request.body.organizationId)
-        return response.noContent()
+        return response.status(200).noContent()
       },
+
     }),
 
     leave: igniter.mutation({

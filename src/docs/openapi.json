@@ -26,6 +26,18 @@
     {
       "name": "Invitation",
       "description": "Endpoints for Invitations"
+    },
+    {
+      "name": "Team",
+      "description": "Endpoints for Teams"
+    },
+    {
+      "name": "Admin",
+      "description": "Admin operations for user management"
+    },
+    {
+      "name": "Billing",
+      "description": "Endpoints for Stripe billing and subscription management"
     }
   ],
   "paths": {
@@ -438,147 +450,6 @@
         }
       }
     },
-    "/invitations": {
-      "get": {
-        "summary": "List all Invitations",
-        "operationId": "list",
-        "tags": [
-          "Invitation"
-        ],
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "summary": "Create a new Invitation",
-        "operationId": "create",
-        "tags": [
-          "Invitation"
-        ],
-        "parameters": [],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/InvitationCreateBody"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          }
-        }
-      }
-    },
-    "/invitations/:id": {
-      "get": {
-        "summary": "Get a Invitation by ID",
-        "operationId": "getById",
-        "tags": [
-          "Invitation"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          }
-        }
-      },
-      "put": {
-        "summary": "Update a Invitation by ID",
-        "operationId": "update",
-        "tags": [
-          "Invitation"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/InvitationUpdateBody"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          }
-        }
-      },
-      "delete": {
-        "summary": "Delete a Invitation by ID",
-        "operationId": "delete",
-        "tags": [
-          "Invitation"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          }
-        }
-      }
-    },
     "/invitations/send": {
       "post": {
         "summary": "Send organization invitation",
@@ -727,6 +598,713 @@
           }
         }
       }
+    },
+    "/teams/create": {
+      "post": {
+        "summary": "Create a new team in organization",
+        "operationId": "create",
+        "tags": [
+          "Team"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TeamCreateBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/teams/list": {
+      "get": {
+        "summary": "List all teams in organization",
+        "operationId": "list",
+        "tags": [
+          "Team"
+        ],
+        "parameters": [
+          {
+            "name": "organizationId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/teams/update": {
+      "put": {
+        "summary": "Update team details",
+        "operationId": "update",
+        "tags": [
+          "Team"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TeamUpdateBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/teams/delete": {
+      "delete": {
+        "summary": "Delete a team",
+        "operationId": "delete",
+        "tags": [
+          "Team"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TeamDeleteBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/teams/set-active": {
+      "post": {
+        "summary": "Set active team for user",
+        "operationId": "setActive",
+        "tags": [
+          "Team"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TeamSetActiveBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/teams/active": {
+      "get": {
+        "summary": "Get current active team",
+        "operationId": "getActive",
+        "tags": [
+          "Team"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/teams/user-teams": {
+      "get": {
+        "summary": "List all teams user belongs to",
+        "operationId": "listUserTeams",
+        "tags": [
+          "Team"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/teams/add-member": {
+      "post": {
+        "summary": "Add member to team",
+        "operationId": "addMember",
+        "tags": [
+          "Team"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TeamAddMemberBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/teams/remove-member": {
+      "delete": {
+        "summary": "Remove member from team",
+        "operationId": "removeMember",
+        "tags": [
+          "Team"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TeamRemoveMemberBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/teams/members": {
+      "get": {
+        "summary": "List all members of a team",
+        "operationId": "listMembers",
+        "tags": [
+          "Team"
+        ],
+        "parameters": [
+          {
+            "name": "teamId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/create-user": {
+      "post": {
+        "summary": "Create a new user (admin only)",
+        "operationId": "createUser",
+        "tags": [
+          "Admin"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AdminCreateUserBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/users": {
+      "get": {
+        "summary": "List all users (admin only)",
+        "operationId": "listUsers",
+        "tags": [
+          "Admin"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/ban-user": {
+      "post": {
+        "summary": "Ban a user",
+        "operationId": "banUser",
+        "tags": [
+          "Admin"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AdminBanUserBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/unban-user": {
+      "post": {
+        "summary": "Unban a user",
+        "operationId": "unbanUser",
+        "tags": [
+          "Admin"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AdminUnbanUserBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/remove-user": {
+      "delete": {
+        "summary": "Permanently remove a user",
+        "operationId": "removeUser",
+        "tags": [
+          "Admin"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AdminRemoveUserBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/user-sessions": {
+      "get": {
+        "summary": "List all sessions for a user",
+        "operationId": "listUserSessions",
+        "tags": [
+          "Admin"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/revoke-session": {
+      "post": {
+        "summary": "Revoke a specific session",
+        "operationId": "revokeSession",
+        "tags": [
+          "Admin"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AdminRevokeSessionBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/revoke-user-sessions": {
+      "post": {
+        "summary": "Revoke all sessions for a user",
+        "operationId": "revokeUserSessions",
+        "tags": [
+          "Admin"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AdminRevokeUserSessionsBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/impersonate": {
+      "post": {
+        "summary": "Start impersonating a user",
+        "operationId": "impersonateUser",
+        "tags": [
+          "Admin"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AdminImpersonateUserBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/stop-impersonating": {
+      "post": {
+        "summary": "Stop impersonating and return to admin account",
+        "operationId": "stopImpersonating",
+        "tags": [
+          "Admin"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/billing/subscription": {
+      "get": {
+        "summary": "Get current subscription details for the user or reference",
+        "operationId": "getSubscription",
+        "tags": [
+          "Billing"
+        ],
+        "parameters": [
+          {
+            "name": "referenceId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "The reference ID to get subscription for (e.g., organization ID)"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/billing/subscription/upgrade": {
+      "post": {
+        "summary": "Upgrade subscription to a different plan",
+        "operationId": "upgradeSubscription",
+        "tags": [
+          "Billing"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BillingUpgradeSubscriptionBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/billing/subscription/cancel": {
+      "post": {
+        "summary": "Cancel subscription at the end of the current billing period",
+        "operationId": "cancelSubscription",
+        "tags": [
+          "Billing"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BillingCancelSubscriptionBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/billing/subscription/restore": {
+      "post": {
+        "summary": "Restore a subscription that was set to cancel at period end",
+        "operationId": "restoreSubscription",
+        "tags": [
+          "Billing"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BillingRestoreSubscriptionBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/billing/portal": {
+      "post": {
+        "summary": "Create a Stripe billing portal session for customer self-service",
+        "operationId": "createBillingPortal",
+        "tags": [
+          "Billing"
+        ],
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BillingCreateBillingPortalBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -813,7 +1391,10 @@
           "slug": {
             "type": "string"
           },
-          "metadata": {}
+          "metadata": {
+            "type": "object",
+            "additionalProperties": {}
+          }
         },
         "required": [
           "organizationId"
@@ -923,80 +1504,6 @@
         ],
         "additionalProperties": false
       },
-      "InvitationCreateBody": {
-        "type": "object",
-        "properties": {
-          "organizationId": {
-            "type": "string"
-          },
-          "organization": {
-            "type": "string"
-          },
-          "email": {
-            "type": "string"
-          },
-          "role": {
-            "type": "string",
-            "nullable": true
-          },
-          "status": {
-            "type": "string"
-          },
-          "expiresAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "inviterId": {
-            "type": "string"
-          },
-          "user": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "organizationId",
-          "organization",
-          "email",
-          "role",
-          "status",
-          "expiresAt",
-          "inviterId",
-          "user"
-        ],
-        "additionalProperties": false
-      },
-      "InvitationUpdateBody": {
-        "type": "object",
-        "properties": {
-          "organizationId": {
-            "type": "string"
-          },
-          "organization": {
-            "type": "string"
-          },
-          "email": {
-            "type": "string"
-          },
-          "role": {
-            "type": "string",
-            "nullable": true
-          },
-          "status": {
-            "type": "string"
-          },
-          "expiresAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "inviterId": {
-            "type": "string"
-          },
-          "user": {
-            "type": "string"
-          }
-        },
-        "additionalProperties": false
-      },
       "InvitationSendBody": {
         "type": "object",
         "properties": {
@@ -1069,6 +1576,359 @@
         },
         "required": [
           "invitationId"
+        ],
+        "additionalProperties": false
+      },
+      "TeamCreateBody": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 2
+          },
+          "organizationId": {
+            "type": "string"
+          },
+          "gruposAtribuidos": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "configuracaoEquipe": {
+            "type": "object",
+            "properties": {
+              "gatilhosCustomizados": {
+                "type": "array"
+              },
+              "prioridadePadrao": {
+                "type": "string"
+              },
+              "slaResposta": {
+                "type": "number"
+              },
+              "headUserId": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "additionalProperties": false
+      },
+      "TeamListQuery": {
+        "type": "object",
+        "properties": {
+          "organizationId": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "TeamUpdateBody": {
+        "type": "object",
+        "properties": {
+          "teamId": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "minLength": 2
+              },
+              "gruposAtribuidos": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "configuracaoEquipe": {
+                "type": "object",
+                "properties": {
+                  "gatilhosCustomizados": {
+                    "type": "array"
+                  },
+                  "prioridadePadrao": {
+                    "type": "string"
+                  },
+                  "slaResposta": {
+                    "type": "number"
+                  },
+                  "headUserId": {
+                    "type": "string"
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "teamId",
+          "data"
+        ],
+        "additionalProperties": false
+      },
+      "TeamDeleteBody": {
+        "type": "object",
+        "properties": {
+          "teamId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "teamId"
+        ],
+        "additionalProperties": false
+      },
+      "TeamSetActiveBody": {
+        "type": "object",
+        "properties": {
+          "teamId": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "TeamAddMemberBody": {
+        "type": "object",
+        "properties": {
+          "teamId": {
+            "type": "string"
+          },
+          "userId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "teamId",
+          "userId"
+        ],
+        "additionalProperties": false
+      },
+      "TeamRemoveMemberBody": {
+        "type": "object",
+        "properties": {
+          "teamId": {
+            "type": "string"
+          },
+          "userId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "teamId",
+          "userId"
+        ],
+        "additionalProperties": false
+      },
+      "TeamListMembersQuery": {
+        "type": "object",
+        "properties": {
+          "teamId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "teamId"
+        ],
+        "additionalProperties": false
+      },
+      "AdminCreateUserBody": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "name": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string",
+            "minLength": 8
+          },
+          "role": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "email",
+          "password"
+        ],
+        "additionalProperties": false
+      },
+      "AdminBanUserBody": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "banExpires": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "userId"
+        ],
+        "additionalProperties": false
+      },
+      "AdminUnbanUserBody": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "userId"
+        ],
+        "additionalProperties": false
+      },
+      "AdminRemoveUserBody": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "userId"
+        ],
+        "additionalProperties": false
+      },
+      "AdminListUserSessionsQuery": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "userId"
+        ],
+        "additionalProperties": false
+      },
+      "AdminRevokeSessionBody": {
+        "type": "object",
+        "properties": {
+          "sessionToken": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "sessionToken"
+        ],
+        "additionalProperties": false
+      },
+      "AdminRevokeUserSessionsBody": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "userId"
+        ],
+        "additionalProperties": false
+      },
+      "AdminImpersonateUserBody": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "userId"
+        ],
+        "additionalProperties": false
+      },
+      "BillingGetSubscriptionQuery": {
+        "type": "object",
+        "properties": {
+          "referenceId": {
+            "type": "string",
+            "description": "The reference ID to get subscription for (e.g., organization ID)"
+          }
+        },
+        "additionalProperties": false
+      },
+      "BillingUpgradeSubscriptionBody": {
+        "type": "object",
+        "properties": {
+          "plan": {
+            "type": "string",
+            "enum": [
+              "Free",
+              "Pro"
+            ],
+            "description": "The plan to upgrade to"
+          },
+          "referenceId": {
+            "type": "string",
+            "description": "The reference ID for the subscription (e.g., organization ID)"
+          }
+        },
+        "required": [
+          "plan"
+        ],
+        "additionalProperties": false
+      },
+      "BillingCancelSubscriptionBody": {
+        "type": "object",
+        "properties": {
+          "subscriptionId": {
+            "type": "string",
+            "description": "The Stripe subscription ID to cancel"
+          },
+          "referenceId": {
+            "type": "string",
+            "description": "The reference ID for the subscription (e.g., organization ID)"
+          }
+        },
+        "additionalProperties": false
+      },
+      "BillingRestoreSubscriptionBody": {
+        "type": "object",
+        "properties": {
+          "subscriptionId": {
+            "type": "string",
+            "description": "The Stripe subscription ID to restore"
+          },
+          "referenceId": {
+            "type": "string",
+            "description": "The reference ID for the subscription (e.g., organization ID)"
+          }
+        },
+        "additionalProperties": false
+      },
+      "BillingCreateBillingPortalBody": {
+        "type": "object",
+        "properties": {
+          "returnUrl": {
+            "type": "string",
+            "format": "uri",
+            "description": "URL to return to after billing portal session"
+          },
+          "referenceId": {
+            "type": "string",
+            "description": "The reference ID for the subscription (e.g., organization ID)"
+          }
+        },
+        "required": [
+          "returnUrl"
         ],
         "additionalProperties": false
       }

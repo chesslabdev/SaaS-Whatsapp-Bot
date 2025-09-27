@@ -8,70 +8,6 @@ export const invitationController = igniter.controller({
   description: 'Endpoints for Invitations',
   path: '/invitations',
   actions: {
-    // Database CRUD operations
-    list: igniter.query({
-      name: 'list',
-      description: 'List all Invitations',
-      path: '/',
-      use: [invitationProcedure()],
-      handler: async ({ context, response }) => {
-        const records = await context.invitationRepository.findAll()
-        return response.success(records)
-      },
-    }),
-
-    getById: igniter.query({
-      name: 'getById',
-      description: 'Get a Invitation by ID',
-      path: '/:id' as const,
-      use: [invitationProcedure()],
-      handler: async ({ request, context, response }) => {
-        const record = await context.invitationRepository.findById(request.params.id)
-        if (!record) {
-          return response.notFound('Invitation not found')
-        }
-        return response.success(record)
-      },
-    }),
-
-    create: igniter.mutation({
-      name: 'create',
-      description: 'Create a new Invitation',
-      path: '/',
-      method: 'POST',
-      body: CreateInvitationInputSchema,
-      use: [invitationProcedure()],
-      handler: async ({ request, context, response }) => {
-        const newRecord = await context.invitationRepository.create(request.body)
-        return response.created(newRecord)
-      },
-    }),
-
-    update: igniter.mutation({
-      name: 'update',
-      description: 'Update a Invitation by ID',
-      path: '/:id' as const,
-      method: 'PUT',
-      body: UpdateInvitationInputSchema,
-      use: [invitationProcedure()],
-      handler: async ({ request, context, response }) => {
-        const updatedRecord = await context.invitationRepository.update(request.params.id, request.body)
-        return response.success(updatedRecord)
-      },
-    }),
-
-    delete: igniter.mutation({
-      name: 'delete',
-      description: 'Delete a Invitation by ID',
-      path: '/:id' as const,
-      method: 'DELETE',
-      use: [invitationProcedure()],
-      handler: async ({ request, context, response }) => {
-        await context.invitationRepository.delete(request.params.id)
-        return response.noContent()
-      },
-    }),
-
     // Better Auth organization invitation operations
     send: igniter.mutation({
       name: 'send',
@@ -119,7 +55,7 @@ export const invitationController = igniter.controller({
       use: [invitationProcedure()],
       handler: async ({ request, context, response }) => {
         await context.invitationRepository.cancel(request.body.invitationId)
-        return response.noContent()
+        return response.status(200).noContent()
       },
     }),
 

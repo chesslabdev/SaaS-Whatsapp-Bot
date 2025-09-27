@@ -80,7 +80,7 @@ export const memberController = igniter.controller({
           request.body.memberId,
           request.body.organizationId
         )
-        return response.noContent()
+        return response.status(200).noContent()
       },
     }),
   },
