@@ -19,7 +19,6 @@ export default function LoginForm() {
     const loginMutation = api.auth.signIn.useMutation({
         onSuccess: (data) => {
             toast.success('Login realizado com sucesso!')
-            // Redireciona para o dashboard ou página inicial
             router.push('/dashboard')
         },
         onError: (error) => {

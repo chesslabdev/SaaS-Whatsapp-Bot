@@ -17,11 +17,9 @@ export default function RegisterForm() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
-    // Usando o useMutation do Igniter.js para fazer registro
     const registerMutation = api.auth.signUp.useMutation({
         onSuccess: (data) => {
             toast.success('Conta criada com sucesso!')
-            // Redireciona para a página de login ou dashboard
             router.push('/login')
         },
         onError: (error) => {
@@ -31,14 +29,10 @@ export default function RegisterForm() {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
-
-        // Validação básica da senha
         if (password.length < 8) {
             toast.error('A senha deve ter pelo menos 8 caracteres')
             return
         }
-
-        // Chama a mutation com os dados do formulário
         registerMutation.mutate({
             body: { email, password, name: `${firstname} ${lastname}`.trim() },
         })
